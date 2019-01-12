@@ -11,6 +11,8 @@ RUN cd rclone-*-linux-amd64 && \
     chmod 755 /usr/bin/rclone
 
 FROM base
+
+RUN apk -U add ca-certificates && rm -rf /var/cache/apk/*
 COPY --from=builder /usr/bin/rclone /usr/bin/rclone
 
 ENTRYPOINT ["/usr/bin/rclone"]
