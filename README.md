@@ -1,18 +1,3 @@
-[github]: https://github.com/rayou/docker-rclone
-[app-github]: https://github.com/ncw/rclone
-[microbadger]: https://microbadger.com/images/rayou/rclone
-[dockerstore]: https://hub.docker.com/r/rayou/rclone
-[donation]: https://donorbox.org/rayou?amount=10
-
-# docker-rclone
-[![](https://images.microbadger.com/badges/image/rayou/rclone.svg)][microbadger] [![](https://images.microbadger.com/badges/version/rayou/rclone.svg)][microbadger] [![](https://img.shields.io/docker/stars/rayou/rclone.svg)][dockerstore] [![](https://img.shields.io/badge/Donate-Donorbox-green.svg)][donation]
-
-Docker image of [rclone][app-github].
-
-Repository name in Docker Hub: [rayou/rclone][dockerstore]
-
-Repository name in Github: [rayou/docker-rclone][github]
-
 # Build
 ```bash
 $ docker build --build-arg VERSION=$RCLONE_VERSION -t rclone .
@@ -20,32 +5,39 @@ $ docker build --build-arg VERSION=$RCLONE_VERSION -t rclone .
 ```
 
 # Usage
-
-### Run `rclone` directly
+Besides `rclone` this container also features `inotify`.
+### Run `rclone` (default entrypoint)
 ```bash
-$ docker run --rm -it rayou/rclone:latest --help
+$ docker run --rm -it travelping/rclone:latest --help
 ```
 
 ### Run shell
 ```bash
-$ docker run --rm -it --entrypoint=/bin/sh rayou/rclone:latest
+$ docker run --rm -it --entrypoint=/bin/sh travelping/rclone:latest
 ```
 
-# Documentation
-- https://rclone.org/docs/
 
-# Contributing
+## Debugging
+All inotify-events can be neatly logged using this command:
+```
+inotifywait -mr --timefmt '%H:%M' --format '%T %w %e %f' /data/"
+```
 
-PRs are welcome.
+## Script
 
-# Author
+Wating for the `close_write` event, this command only pushes "finished" data to the destination.
+```
+watchnames=''
+[ -d /data/ ] && watchnames="$watchnames /data/"
+inotifywait --monitor -e close_write --format %w%f $watchnames | while read FILE
+do
+  echo "$FILE is finished. Moving to data/finished/"
+  mv $FILE/ data/finished/
+  rclone move /data/finished/ onedrive:data/
+done
+```
 
-Ray Ou - yuhung.ou@live.com
-
-# Donation
-
-[![](https://d1iczxrky3cnb2.cloudfront.net/button-small-green.png)][donation]
-
-# License
-
-MIT.
+Endpoints checked:
+- [x] SFTP
+- [X] Onedrive
+- [ ] S3
