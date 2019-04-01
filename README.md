@@ -51,7 +51,7 @@ Besides `rclone` this container also features `inotify`. Watchpatterns can be us
 are being transfered. This is important so no garbage-data is moved (e.g. traces still beeing captured).
 All inotify-events for a directory `/data/` can be neatly logged using this command:
 ```
-inotifywait -mr --timefmt '%H:%M' --format '%T %w %e %f' /data/"
+inotifywait -mr --timefmt '%H:%M' --format '%T %w %e %f' /data/
 ```
 
 ## Inotify-Script
