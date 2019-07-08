@@ -67,6 +67,19 @@ do
 done
 ```
 
+## Inotify-Script with lz4 compression
+Like the Inotify example, but compress data with lz4 before pushing to destination.
+```
+watchnames=''
+[ -d /data/ ] && watchnames="$watchnames /data/"
+inotifywait --monitor -e close_write --format %w%f $watchnames | while read FILE
+do
+  echo "$FILE is finished. Moving to data/finished/"
+  lz4 --rm -c9 $FILE > data/finished/$FILE.lz4
+  rclone move /data/finished/ $RCLONE_REMOTE_NAME:RCLONE_REMOTE_PATH/
+done
+```
+
 Endpoints checked:
 - [x] SFTP
 - [X] Onedrive
