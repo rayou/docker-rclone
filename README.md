@@ -24,7 +24,7 @@ docker run --rm -it -e RCLONE_CONFIG_SFTP_TYPE=sftp \
 -e RCLONE_CONFIG_SFTP_HOST=host.com \
 -e RCLONE_CONFIG_SFTP_USER=name \
 -e RCLONE_CONFIG_SFTP_PORT=23 \
--e RCLONE_CONFIG_SFTP_PASS=password travelping/rclone:v1.0 touch sftp:path
+-e RCLONE_CONFIG_SFTP_PASS=password travelping/rclone:latest touch sftp:path
 ```
 
 ### Run `rclone` (s3)
@@ -38,7 +38,7 @@ docker run --rm -it -e RCLONE_CONFIG_S3_TYPE: "s3" \
 -e RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: "<sensitive>" \
 -e RCLONE_CONFIG_S3_REGION: "s3-<region>" \
 -e RCLONE_CONFIG_S3_ACL: "private" \
-    RCLONE_CONFIG_S3_FORCE_PATH_STYLE: "false" travelping/rclone:v1.0 touch sftp:path
+    RCLONE_CONFIG_S3_FORCE_PATH_STYLE: "false" travelping/rclone:latest touch sftp:path
 ```
 
 ### Run shell
