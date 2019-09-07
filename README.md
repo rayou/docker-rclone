@@ -1,15 +1,16 @@
 # Build
+
 ```bash
 $ docker build --build-arg VERSION=$RCLONE_VERSION -t rclone .
-# docker build --build-arg VERSION=v1.45 -t rclone .
 ```
 
 # Usage
-`Rclone` is defined generically through the container environment.
-To find the name of the environment variable, first, take the long option name,
-strip the leading --, change - to _ make upper case and prepend RCLONE_.
-All available endpoints are described in the [official rclone documentation](https://rclone.org/commands/rclone_move/)
-of each command.
+
+`Rclone` is defined generically through the container environment.  To find
+the name of the environment variable, first, take the long option name, strip
+the leading --, change - to _ make upper case and prepend RCLONE\_.
+All available endpoints are described in the [official rclone
+documentation](https://rclone.org/commands/rclone_move/) of each command.
 
 ### Run `rclone` (default entrypoint)
 ```bash
@@ -28,8 +29,10 @@ docker run --rm -it -e RCLONE_CONFIG_SFTP_TYPE=sftp \
 ```
 
 ### Run `rclone` (s3)
-This configuration provides a simple functionality test by enhancing the default entrypoint (`usr/bin/rclone`).
-Running a touch command on the remote path of a s3 bucket can be done entirely through environment.
+
+This configuration provides a simple functionality test by enhancing the
+default entrypoint (`usr/bin/rclone`).  Running a touch command on the remote
+path of a s3 bucket can be done entirely through environment.
 
 ```bash
 docker run --rm -it -e RCLONE_CONFIG_S3_TYPE: "s3" \
@@ -47,15 +50,22 @@ $ docker run --rm -it --entrypoint=/bin/sh travelping/rclone:latest
 ```
 
 # Inotify
-Besides `rclone` this container also features `inotify`. Watchpatterns can be used to make sure only finished files
-are being transfered. This is important so no garbage-data is moved (e.g. traces still beeing captured).
-All inotify-events for a directory `/data/` can be neatly logged using this command:
+
+Besides `rclone` this container also features `inotify`. Watchpatterns can be
+used to make sure only finished files are being transfered. This is important
+so no garbage-data is moved (e.g. traces still beeing captured).  All
+inotify-events for a directory `/data/` can be neatly logged using this
+command:
+
 ```
 inotifywait -mr --timefmt '%H:%M' --format '%T %w %e %f' /data/
 ```
 
 ## Inotify-Script
-Wating for the `close_write` event, this command only pushes "finished" data to the destination.
+
+Wating for the `close_write` event, this command only pushes "finished" data
+to the destination.
+
 ```
 watchnames=''
 [ -d /data/ ] && watchnames="$watchnames /data/"
@@ -68,7 +78,10 @@ done
 ```
 
 ## Inotify-Script with lz4 compression
-Like the Inotify example, but compress data with lz4 before pushing to destination.
+
+Like the Inotify example, but compress data with lz4 before pushing to
+destination.
+
 ```
 watchnames=''
 [ -d /data/ ] && watchnames="$watchnames /data/"
