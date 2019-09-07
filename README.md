@@ -80,6 +80,25 @@ do
 done
 ```
 
+## Inotify-Script with zstd compression
+
+Like the Inotify example, but compress data with zstd before pushing to
+destination.  It compresses better than .lz4 but needs more CPU cycles. So,
+pick your poison.
+
+```
+watchnames=''
+[ -d /data/ ] && watchnames="$watchnames /data/"
+inotifywait --monitor -e close_write --format %w%f $watchnames | while read FILE
+do
+  echo "$FILE is finished. Moving to data/finished/"
+  zsdt --rm -19 $FILE -o data/finished/$FILE.zstd
+  rclone move /data/finished/ $RCLONE_REMOTE_NAME:RCLONE_REMOTE_PATH/
+done
+```
+
+
+
 Endpoints checked:
 - [x] SFTP
 - [X] Onedrive

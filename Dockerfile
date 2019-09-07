@@ -12,7 +12,7 @@ RUN cd rclone-*-linux-amd64 && \
 
 FROM base
 
-RUN apk --update --no-cache add ca-certificates inotify-tools lz4
+RUN apk --update --no-cache add ca-certificates inotify-tools lz4 zstd
 COPY --from=builder /usr/bin/rclone /usr/bin/rclone
 
 ENTRYPOINT ["/usr/bin/rclone"]
