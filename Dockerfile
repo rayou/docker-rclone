@@ -1,7 +1,7 @@
 FROM alpine:3.10 as base
 
 FROM base as builder
-ARG VERSION=v1.45
+ARG VERSION=v1.49.1
 
 RUN wget https://github.com/ncw/rclone/releases/download/$VERSION/rclone-$VERSION-linux-amd64.zip
 RUN unzip rclone-$VERSION-linux-amd64.zip
