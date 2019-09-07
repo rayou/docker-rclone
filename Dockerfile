@@ -1,4 +1,4 @@
-FROM alpine:3.9 as base
+FROM alpine:3.10 as base
 
 FROM base as builder
 ARG VERSION=v1.45
